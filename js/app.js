@@ -4,6 +4,7 @@
 // DOM元素获取
 const editor = document.getElementById('editor');
 const preview = document.getElementById('preview');
+const lineNumbers = document.getElementById('line-numbers');
 const statusText = document.getElementById('status-text');
 const statusWords = document.getElementById('status-words');
 const statusLines = document.getElementById('status-lines');
@@ -319,11 +320,34 @@ function setView(view) {
     localStorage.setItem('md-view', view);
 }
 
+// 更新行号显示
+function updateLineNumbers() {
+    const lines = editor.value.split('\n');
+    const lineCount = lines.length;
+
+    // 生成行号HTML
+    let lineNumbersHTML = '';
+    for (let i = 1; i <= lineCount; i++) {
+        lineNumbersHTML += i + '\n';
+    }
+
+    lineNumbers.textContent = lineNumbersHTML;
+
+    // 同步滚动位置
+    syncLineNumbersScroll();
+}
+
+// 同步行号容器的滚动位置
+function syncLineNumbersScroll() {
+    lineNumbers.scrollTop = editor.scrollTop;
+}
+
 // 实时渲染Markdown
 function render() {
     const md = editor.value;
     preview.innerHTML = parseMarkdown(md);
     updateStatusBar(md);
+    updateLineNumbers();
     appState.content = md;
     autoSave();
 }
@@ -494,6 +518,11 @@ editor.addEventListener('input', function() {
     render();
 });
 
+// 监听编辑器滚动，同步行号
+editor.addEventListener('scroll', function() {
+    syncLineNumbersScroll();
+});
+
 // 监听光标位置变化
 editor.addEventListener('selectionchange', function() {
     updateStatusBar(editor.value);
@@ -646,6 +675,9 @@ function restore() {
     setView(appState.view);
     render();
     pushUndoStack();
+
+    // 确保行号正确显示
+    updateLineNumbers();
 }
 
 // 上下文菜单事件监听
