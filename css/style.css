@@ -1,0 +1,186 @@
+/*
+ * Markdown编辑器主样式
+ * 支持浅色/深色主题，响应式布局，现代简洁风格
+ */
+:root {
+    --color-bg: #f8f9fa;
+    --color-fg: #222;
+    --color-toolbar: #fff;
+    --color-toolbar-border: #e0e0e0;
+    --color-statusbar: #f1f3f4;
+    --color-primary: #0078d7;
+    --color-shadow: rgba(0,0,0,0.04);
+    --transition: 0.3s;
+}
+[data-theme="dark"] {
+    --color-bg: #23272f;
+    --color-fg: #f5f5f5;
+    --color-toolbar: #23272f;
+    --color-toolbar-border: #333a44;
+    --color-statusbar: #181c22;
+    --color-primary: #4f8cff;
+    --color-shadow: rgba(0,0,0,0.18);
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    transition: background var(--transition), color var(--transition);
+}
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.toolbar {
+    display: flex;
+    align-items: center;
+    background: var(--color-toolbar);
+    border-bottom: 1px solid var(--color-toolbar-border);
+    padding: 0 1rem;
+    height: 48px;
+    box-shadow: 0 2px 4px var(--color-shadow);
+    z-index: 10;
+    transition: background var(--transition);
+}
+.toolbar button {
+    background: none;
+    border: none;
+    color: var(--color-fg);
+    font-size: 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    padding: 0.5em 0.8em;
+    border-radius: 4px;
+    transition: background var(--transition), color var(--transition);
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+}
+.toolbar button:hover, .toolbar button:focus {
+    background: var(--color-primary);
+    color: #fff;
+}
+.toolbar i {
+    font-size: 1.1em;
+}
+.editor-container {
+    flex: 1 1 auto;
+    display: flex;
+    min-height: 0;
+    transition: background var(--transition);
+}
+.editor-panel, .preview-panel {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    transition: background var(--transition);
+}
+.editor-panel {
+    border-right: 1px solid var(--color-toolbar-border);
+    background: var(--color-bg);
+    transition: background var(--transition);
+}
+#editor {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    border: none;
+    resize: none;
+    padding: 1.2em;
+    font-size: 1.1em;
+    background: transparent;
+    color: var(--color-fg);
+    outline: none;
+    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+    transition: background var(--transition), color var(--transition);
+}
+.preview-panel {
+    background: var(--color-bg);
+    overflow: auto;
+    padding: 1.2em;
+}
+.markdown-body {
+    font-size: 1.1em;
+    line-height: 1.7;
+    word-break: break-all;
+}
+.statusbar {
+    height: 32px;
+    background: var(--color-statusbar);
+    color: var(--color-fg);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    border-top: 1px solid var(--color-toolbar-border);
+    font-size: 0.95em;
+    box-shadow: 0 -1px 2px var(--color-shadow);
+    transition: background var(--transition), color var(--transition);
+}
+/* 响应式布局：移动端上下布局 */
+@media (max-width: 800px) {
+    .editor-container {
+        flex-direction: column;
+    }
+    .editor-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--color-toolbar-border);
+    }
+}
+/* 过渡动画 */
+.editor-panel, .preview-panel, .toolbar, .statusbar {
+    transition: background var(--transition), color var(--transition);
+}
+/* 代码块样式优化 */
+.markdown-body pre code {
+    font-size: 1em;
+    border-radius: 4px;
+    padding: 0.8em 1em;
+    background: #222;
+    color: #f5f5f5;
+    overflow-x: auto;
+}
+[data-theme="dark"] .markdown-body pre code {
+    background: #181c22;
+    color: #e0e0e0;
+}
+/* 表格样式 */
+.markdown-body table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+.markdown-body th, .markdown-body td {
+    border: 1px solid #ccc;
+    padding: 0.5em 1em;
+    text-align: left;
+}
+[data-theme="dark"] .markdown-body th, [data-theme="dark"] .markdown-body td {
+    border-color: #444;
+}
+/* 引用块样式 */
+.markdown-body blockquote {
+    border-left: 4px solid var(--color-primary);
+    background: rgba(0,0,0,0.03);
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    color: #555;
+}
+[data-theme="dark"] .markdown-body blockquote {
+    background: rgba(255,255,255,0.03);
+    color: #aaa;
+}
+/* 分割线样式 */
+.markdown-body hr {
+    border: none;
+    border-top: 2px solid #eee;
+    margin: 2em 0;
+}
+[data-theme="dark"] .markdown-body hr {
+    border-top: 2px solid #444;
+} 
