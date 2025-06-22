@@ -10,12 +10,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- 引入highlight.js代码高亮样式 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" id="hljs-theme">
+    <!-- 引入KaTeX数学公式样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
     <!-- 引入自定义样式 -->
     <link rel="stylesheet" href="css/style.css">
     <!-- 引入marked.js库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- 引入highlight.js库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <!-- 引入KaTeX数学公式库 -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- 顶部工具栏 -->
@@ -50,6 +54,7 @@
             <button id="heading-btn" title="标题"><i class="fa fa-heading"></i></button>
             <button id="link-btn" title="链接 (Ctrl+K)"><i class="fa fa-link"></i></button>
             <button id="image-btn" title="图片"><i class="fa fa-image"></i></button>
+            <button id="math-btn" title="数学公式"><i class="fa fa-square-root-alt"></i></button>
             <button id="table-btn" title="表格"><i class="fa fa-table"></i></button>
             <button id="list-btn" title="列表"><i class="fa fa-list"></i></button>
             <button id="quote-btn" title="引用"><i class="fa fa-quote-left"></i></button>

@@ -1,6 +1,79 @@
 // markdown-parser.js
 // 封装marked.js和highlight.js，提供Markdown转HTML的函数
 
+// --- KaTeX 数学公式扩展 ---
+const katexExtension = {
+    name: 'katex',
+    extensions: [
+        {
+            name: 'inlineKatex',
+            level: 'inline',
+            start(src) { return src.indexOf('$'); },
+            tokenizer(src) {
+                const match = src.match(/^\$([^$\n]+?)\$/);
+                if (match) {
+                    return {
+                        type: 'inlineKatex',
+                        raw: match[0],
+                        text: match[1]
+                    };
+                }
+            },
+            renderer(token) {
+                try {
+                    if (typeof window.katex === 'undefined') {
+                        console.warn('KaTeX未加载，返回原始公式');
+                        return `<span class="math-error">$${token.text}$</span>`;
+                    }
+                    const rendered = window.katex.renderToString(token.text, {
+                        displayMode: false,
+                        throwOnError: false,
+                        errorColor: '#cc0000',
+                        strict: false
+                    });
+                    return `<span class="math-inline">${rendered}</span>`;
+                } catch (error) {
+                    console.warn('行内公式渲染错误:', token.text, error);
+                    return `<span class="math-error" title="${error.message}">$${token.text}$</span>`;
+                }
+            }
+        },
+        {
+            name: 'blockKatex',
+            level: 'block',
+            start(src) { return src.indexOf('$$'); },
+            tokenizer(src) {
+                const match = src.match(/^\s*\$\$([\s\S]*?)\$\$\s*(\n|$)/);
+                if (match) {
+                    return {
+                        type: 'blockKatex',
+                        raw: match[0],
+                        text: match[1].trim()
+                    };
+                }
+            },
+            renderer(token) {
+                try {
+                    if (typeof window.katex === 'undefined') {
+                        console.warn('KaTeX未加载，返回原始公式');
+                        return `<div class="math-error">$$${token.text}$$</div>`;
+                    }
+                    const rendered = window.katex.renderToString(token.text, {
+                        displayMode: true,
+                        throwOnError: false,
+                        errorColor: '#cc0000',
+                        strict: false
+                    });
+                    return `<div class="math-block">${rendered}</div>`;
+                } catch (error) {
+                    console.warn('块级公式渲染错误:', token.text, error);
+                    return `<div class="math-error" title="${error.message}">$$${token.text}$$</div>`;
+                }
+            }
+        }
+    ]
+};
+
 /**
  * 将Markdown文本解析为HTML
  * @param {string} markdown - Markdown源文本
@@ -23,6 +96,14 @@ function parseMarkdown(markdown) {
             }
         }
     });
+
+    // 使用KaTeX扩展（如果KaTeX已加载）
+    if (typeof window.katex !== 'undefined') {
+        marked.use(katexExtension);
+        console.log('KaTeX扩展已启用');
+    } else {
+        console.warn('KaTeX未加载，跳过数学公式扩展');
+    }
 
     let html = marked.parse(markdown);
 
@@ -102,3 +183,5 @@ window.copyCode = function(elementId) {
         }, 2000);
     });
 };
+
+// 数学公式处理现在通过marked扩展系统完成，不再需要单独的预处理和后处理函数

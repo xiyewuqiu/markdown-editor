@@ -35,6 +35,7 @@ const codeblockBtn = document.getElementById('codeblock-btn');
 const headingBtn = document.getElementById('heading-btn');
 const linkBtn = document.getElementById('link-btn');
 const imageBtn = document.getElementById('image-btn');
+const mathBtn = document.getElementById('math-btn');
 const tableBtn = document.getElementById('table-btn');
 const listBtn = document.getElementById('list-btn');
 const quoteBtn = document.getElementById('quote-btn');
@@ -218,6 +219,116 @@ function makeImage() {
     if (url) {
         insertText('![', `](${url})`, '图片描述');
     }
+}
+
+function makeMath() {
+    // 创建数学公式选择对话框
+    const mathDialog = document.createElement('div');
+    mathDialog.className = 'math-dialog';
+    mathDialog.innerHTML = `
+        <div class="math-dialog-content">
+            <h3>插入数学公式</h3>
+            <div class="math-type-selector">
+                <button class="math-type-btn active" data-type="inline">行内公式 $...$</button>
+                <button class="math-type-btn" data-type="block">块级公式 $$...$$</button>
+            </div>
+            <div class="math-examples">
+                <h4>常用公式示例：</h4>
+                <div class="math-example-grid">
+                    <button class="math-example" data-formula="x^2 + y^2 = z^2">勾股定理</button>
+                    <button class="math-example" data-formula="\\frac{a}{b}">分数</button>
+                    <button class="math-example" data-formula="\\sqrt{x}">平方根</button>
+                    <button class="math-example" data-formula="\\sum_{i=1}^{n} x_i">求和</button>
+                    <button class="math-example" data-formula="\\int_{a}^{b} f(x) dx">积分</button>
+                    <button class="math-example" data-formula="\\lim_{x \\to \\infty} f(x)">极限</button>
+                    <button class="math-example" data-formula="\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}">矩阵</button>
+                    <button class="math-example" data-formula="\\alpha + \\beta = \\gamma">希腊字母</button>
+                </div>
+            </div>
+            <div class="math-input-area">
+                <label for="math-input">LaTeX公式：</label>
+                <textarea id="math-input" placeholder="输入LaTeX公式，如：x^2 + y^2 = z^2"></textarea>
+                <div class="math-preview" id="math-preview"></div>
+            </div>
+            <div class="math-dialog-buttons">
+                <button class="btn-cancel">取消</button>
+                <button class="btn-insert">插入</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(mathDialog);
+
+    let currentType = 'inline';
+    const mathInput = mathDialog.querySelector('#math-input');
+    const mathPreview = mathDialog.querySelector('#math-preview');
+
+    // 类型切换
+    mathDialog.querySelectorAll('.math-type-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            mathDialog.querySelectorAll('.math-type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentType = btn.dataset.type;
+            updatePreview();
+        });
+    });
+
+    // 示例公式点击
+    mathDialog.querySelectorAll('.math-example').forEach(btn => {
+        btn.addEventListener('click', () => {
+            mathInput.value = btn.dataset.formula;
+            updatePreview();
+        });
+    });
+
+    // 实时预览
+    function updatePreview() {
+        const formula = mathInput.value.trim();
+        if (formula && window.katex) {
+            try {
+                const rendered = window.katex.renderToString(formula, {
+                    displayMode: currentType === 'block',
+                    throwOnError: false
+                });
+                mathPreview.innerHTML = rendered;
+                mathPreview.style.display = 'block';
+            } catch (error) {
+                mathPreview.innerHTML = '<span style="color: red;">公式语法错误</span>';
+                mathPreview.style.display = 'block';
+            }
+        } else {
+            mathPreview.style.display = 'none';
+        }
+    }
+
+    mathInput.addEventListener('input', updatePreview);
+
+    // 按钮事件
+    mathDialog.querySelector('.btn-cancel').addEventListener('click', () => {
+        document.body.removeChild(mathDialog);
+    });
+
+    mathDialog.querySelector('.btn-insert').addEventListener('click', () => {
+        const formula = mathInput.value.trim();
+        if (formula) {
+            if (currentType === 'block') {
+                insertText('\n$$\n', '\n$$\n', formula);
+            } else {
+                insertText('$', '$', formula);
+            }
+        }
+        document.body.removeChild(mathDialog);
+    });
+
+    // 点击外部关闭
+    mathDialog.addEventListener('click', (e) => {
+        if (e.target === mathDialog) {
+            document.body.removeChild(mathDialog);
+        }
+    });
+
+    // 聚焦输入框
+    setTimeout(() => mathInput.focus(), 100);
 }
 
 function makeTable() {
@@ -635,6 +746,7 @@ codeblockBtn.onclick = makeCodeBlock;
 headingBtn.onclick = makeHeading;
 linkBtn.onclick = makeLink;
 imageBtn.onclick = makeImage;
+mathBtn.onclick = makeMath;
 tableBtn.onclick = makeTable;
 listBtn.onclick = makeList;
 quoteBtn.onclick = makeQuote;
@@ -699,5 +811,70 @@ contextMenu.addEventListener('click', function(e) {
     }
 });
 
+// KaTeX加载完成事件监听
+document.addEventListener('katexLoaded', function() {
+    console.log('KaTeX加载完成，重新渲染数学公式');
+    render();
+});
+
+// 检查KaTeX是否已经加载
+function checkKatexLoaded() {
+    if (typeof window.katex !== 'undefined') {
+        console.log('KaTeX已加载');
+        // 重新配置marked以启用KaTeX扩展
+        setupMarkdownParser();
+        return true;
+    }
+
+    // 等待KaTeX加载
+    const checkInterval = setInterval(() => {
+        if (typeof window.katex !== 'undefined') {
+            console.log('KaTeX加载完成');
+            clearInterval(checkInterval);
+            // 重新配置marked以启用KaTeX扩展
+            setupMarkdownParser();
+            render(); // 重新渲染以应用数学公式
+        }
+    }, 100);
+
+    // 10秒后停止检查
+    setTimeout(() => {
+        clearInterval(checkInterval);
+        if (typeof window.katex === 'undefined') {
+            console.error('KaTeX加载失败');
+        }
+    }, 10000);
+
+    return false;
+}
+
+// 设置Markdown解析器
+function setupMarkdownParser() {
+    // 重新配置marked以确保KaTeX扩展被正确加载
+    marked.setOptions({
+        breaks: true,
+        gfm: true,
+        highlight: function(code, lang) {
+            if (lang && hljs.getLanguage(lang)) {
+                return hljs.highlight(code, { language: lang }).value;
+            } else {
+                return hljs.highlightAuto(code).value;
+            }
+        }
+    });
+
+    // 如果KaTeX已加载，启用数学公式扩展
+    if (typeof window.katex !== 'undefined') {
+        // 确保katexExtension在全局作用域中可用
+        if (typeof katexExtension !== 'undefined') {
+            marked.use(katexExtension);
+            console.log('KaTeX扩展已重新启用');
+        }
+    }
+}
+
 // 初始化
-window.onload = restore;
+window.onload = function() {
+    restore();
+    checkKatexLoaded();
+};
