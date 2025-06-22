@@ -6,245 +6,70 @@
     <title>✨ 现代化 Markdown 编辑器</title>
     <meta name="description" content="功能强大、界面精美的现代化 Markdown 编辑器">
     <meta name="theme-color" content="#667eea">
+    <!-- PWA支持 -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
     <!-- 引入Font Awesome图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- 引入highlight.js代码高亮样式 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" id="hljs-theme">
     <!-- 引入KaTeX数学公式样式 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71HotJqlAn" crossorigin="anonymous">
-    <!-- 引入模块化样式 -->
-    <link rel="stylesheet" href="assets/styles/main.css">
+    <!-- 引入自定义样式 -->
+    <link rel="stylesheet" href="css/style.css">
     <!-- 引入marked.js库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- 引入highlight.js库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-    <!-- 引入DOMPurify库 -->
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.2/dist/purify.min.js"></script>
     <!-- 引入KaTeX数学公式库 -->
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfFr4dgmgccOTx" crossorigin="anonymous"></script>
-    <!-- 引入html2pdf.js库 -->
-    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <!-- 顶部导航菜单栏 -->
-    <header class="navbar">
-        <!-- 导航菜单容器 -->
-        <nav class="nav-menu">
-            <!-- 文件菜单 -->
-            <div class="nav-item" data-menu="file">
-                <button class="nav-button">
-                    <i class="fa fa-file"></i>
-                    <span>文件</span>
-                    <i class="fa fa-chevron-down nav-arrow"></i>
-                </button>
-                <div class="dropdown-menu">
-                    <div class="menu-item" data-action="new">
-                        <i class="fa fa-file"></i>
-                        <span>新建文档</span>
-                        <span class="shortcut">Ctrl+N</span>
-                    </div>
-                    <div class="menu-item" data-action="open">
-                        <i class="fa fa-folder-open"></i>
-                        <span>打开文件</span>
-                        <span class="shortcut">Ctrl+O</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="save">
-                        <i class="fa fa-save"></i>
-                        <span>保存文档</span>
-                        <span class="shortcut">Ctrl+S</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="export-html">
-                        <i class="fa fa-file-export"></i>
-                        <span>导出为HTML</span>
-                    </div>
-                    <div class="menu-item" data-action="export-pdf">
-                        <i class="fa fa-file-pdf"></i>
-                        <span>导出为PDF</span>
-                    </div>
-                </div>
-            </div>
+    <!-- 顶部工具栏 -->
+    <header class="toolbar">
+        <!-- 文件操作组 -->
+        <div class="toolbar-group">
+            <button id="new-btn" title="新建文档"><i class="fa fa-file"></i> 新建</button>
+            <button id="open-btn" title="打开本地文件"><i class="fa fa-folder-open"></i> 打开</button>
+            <button id="save-btn" title="保存为Markdown"><i class="fa fa-save"></i> 保存</button>
+            <button id="export-html-btn" title="导出为HTML"><i class="fa fa-file-export"></i> 导出HTML</button>
+        </div>
 
-            <!-- 编辑菜单 -->
-            <div class="nav-item" data-menu="edit">
-                <button class="nav-button">
-                    <i class="fa fa-edit"></i>
-                    <span>编辑</span>
-                    <i class="fa fa-chevron-down nav-arrow"></i>
-                </button>
-                <div class="dropdown-menu">
-                    <div class="menu-item" data-action="select-all">
-                        <i class="fa fa-check-square"></i>
-                        <span>全选</span>
-                        <span class="shortcut">Ctrl+A</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="copy">
-                        <i class="fa fa-copy"></i>
-                        <span>复制</span>
-                        <span class="shortcut">Ctrl+C</span>
-                    </div>
-                    <div class="menu-item" data-action="cut">
-                        <i class="fa fa-cut"></i>
-                        <span>剪切</span>
-                        <span class="shortcut">Ctrl+X</span>
-                    </div>
-                    <div class="menu-item" data-action="paste">
-                        <i class="fa fa-paste"></i>
-                        <span>粘贴</span>
-                        <span class="shortcut">Ctrl+V</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="undo">
-                        <i class="fa fa-undo"></i>
-                        <span>撤销</span>
-                        <span class="shortcut">Ctrl+Z</span>
-                    </div>
-                    <div class="menu-item" data-action="redo">
-                        <i class="fa fa-redo"></i>
-                        <span>重做</span>
-                        <span class="shortcut">Ctrl+Y</span>
-                    </div>
-                </div>
-            </div>
+        <!-- 编辑工具组 -->
+        <div class="toolbar-group">
+            <button id="select-all-btn" title="全选 (Ctrl+A)"><i class="fa fa-check-square"></i> 全选</button>
+            <button id="copy-btn" title="复制 (Ctrl+C)"><i class="fa fa-copy"></i></button>
+            <button id="cut-btn" title="剪切 (Ctrl+X)"><i class="fa fa-cut"></i></button>
+            <button id="paste-btn" title="粘贴 (Ctrl+V)"><i class="fa fa-paste"></i></button>
+        </div>
 
-            <!-- 格式菜单 -->
-            <div class="nav-item" data-menu="format">
-                <button class="nav-button">
-                    <i class="fa fa-font"></i>
-                    <span>格式</span>
-                    <i class="fa fa-chevron-down nav-arrow"></i>
-                </button>
-                <div class="dropdown-menu">
-                    <div class="menu-item" data-action="bold">
-                        <i class="fa fa-bold"></i>
-                        <span>粗体</span>
-                        <span class="shortcut">Ctrl+B</span>
-                    </div>
-                    <div class="menu-item" data-action="italic">
-                        <i class="fa fa-italic"></i>
-                        <span>斜体</span>
-                        <span class="shortcut">Ctrl+I</span>
-                    </div>
-                    <div class="menu-item" data-action="strikethrough">
-                        <i class="fa fa-strikethrough"></i>
-                        <span>删除线</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="code">
-                        <i class="fa fa-code"></i>
-                        <span>行内代码</span>
-                    </div>
-                    <div class="menu-item" data-action="codeblock">
-                        <i class="fa fa-file-code"></i>
-                        <span>代码块</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="clear-format">
-                        <i class="fa fa-eraser"></i>
-                        <span>清除格式</span>
-                    </div>
-                </div>
-            </div>
+        <!-- 格式化工具组 -->
+        <div class="toolbar-group">
+            <button id="bold-btn" title="粗体 (Ctrl+B)"><i class="fa fa-bold"></i></button>
+            <button id="italic-btn" title="斜体 (Ctrl+I)"><i class="fa fa-italic"></i></button>
+            <button id="strikethrough-btn" title="删除线"><i class="fa fa-strikethrough"></i></button>
+            <button id="code-btn" title="行内代码"><i class="fa fa-code"></i></button>
+            <button id="codeblock-btn" title="代码块"><i class="fa fa-file-code"></i></button>
+        </div>
 
-            <!-- 插入菜单 -->
-            <div class="nav-item" data-menu="insert">
-                <button class="nav-button">
-                    <i class="fa fa-plus"></i>
-                    <span>插入</span>
-                    <i class="fa fa-chevron-down nav-arrow"></i>
-                </button>
-                <div class="dropdown-menu">
-                    <div class="menu-item" data-action="heading">
-                        <i class="fa fa-heading"></i>
-                        <span>标题</span>
-                        <div class="submenu">
-                            <div class="menu-item" data-action="heading-1">H1</div>
-                            <div class="menu-item" data-action="heading-2">H2</div>
-                            <div class="menu-item" data-action="heading-3">H3</div>
-                            <div class="menu-item" data-action="heading-4">H4</div>
-                            <div class="menu-item" data-action="heading-5">H5</div>
-                            <div class="menu-item" data-action="heading-6">H6</div>
-                        </div>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="link">
-                        <i class="fa fa-link"></i>
-                        <span>超链接</span>
-                        <span class="shortcut">Ctrl+K</span>
-                    </div>
-                    <div class="menu-item" data-action="image">
-                        <i class="fa fa-image"></i>
-                        <span>图片</span>
-                    </div>
-                    <div class="menu-item" data-action="math">
-                        <i class="fa fa-square-root-alt"></i>
-                        <span>数学公式</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="table">
-                        <i class="fa fa-table"></i>
-                        <span>表格</span>
-                    </div>
-                    <div class="menu-item" data-action="list-ordered">
-                        <i class="fa fa-list-ol"></i>
-                        <span>有序列表</span>
-                    </div>
-                    <div class="menu-item" data-action="list-unordered">
-                        <i class="fa fa-list-ul"></i>
-                        <span>无序列表</span>
-                    </div>
-                    <div class="menu-item" data-action="quote">
-                        <i class="fa fa-quote-left"></i>
-                        <span>引用块</span>
-                    </div>
-                    <div class="menu-item" data-action="hr">
-                        <i class="fa fa-minus"></i>
-                        <span>分割线</span>
-                    </div>
-                </div>
-            </div>
+        <!-- 插入工具组 -->
+        <div class="toolbar-group">
+            <button id="heading-btn" title="标题"><i class="fa fa-heading"></i></button>
+            <button id="link-btn" title="链接 (Ctrl+K)"><i class="fa fa-link"></i></button>
+            <button id="image-btn" title="图片"><i class="fa fa-image"></i></button>
+            <button id="math-btn" title="数学公式"><i class="fa fa-square-root-alt"></i></button>
+            <button id="table-btn" title="表格"><i class="fa fa-table"></i></button>
+            <button id="list-btn" title="列表"><i class="fa fa-list"></i></button>
+            <button id="quote-btn" title="引用"><i class="fa fa-quote-left"></i></button>
+            <button id="hr-btn" title="分割线"><i class="fa fa-minus"></i></button>
+        </div>
 
-            <!-- 视图菜单 -->
-            <div class="nav-item" data-menu="view">
-                <button class="nav-button">
-                    <i class="fa fa-eye"></i>
-                    <span>视图</span>
-                    <i class="fa fa-chevron-down nav-arrow"></i>
-                </button>
-                <div class="dropdown-menu">
-                    <div class="menu-item" data-action="fullscreen">
-                        <i class="fa fa-expand"></i>
-                        <span>全屏模式</span>
-                        <span class="shortcut">F11</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="view-split">
-                        <i class="fa fa-columns"></i>
-                        <span>分栏视图</span>
-                    </div>
-                    <div class="menu-item" data-action="view-editor">
-                        <i class="fa fa-edit"></i>
-                        <span>编辑视图</span>
-                    </div>
-                    <div class="menu-item" data-action="view-preview">
-                        <i class="fa fa-eye"></i>
-                        <span>预览视图</span>
-                    </div>
-                    <div class="menu-separator"></div>
-                    <div class="menu-item" data-action="theme-toggle">
-                        <i class="fa fa-moon"></i>
-                        <span>切换主题</span>
-                    </div>
-                    <div class="menu-item" data-action="line-numbers">
-                        <i class="fa fa-list-ol"></i>
-                        <span>显示行号</span>
-                    </div>
-                </div>
-            </div>
-        </nav>
+        <!-- 视图和主题组 -->
+        <div class="toolbar-group">
+            <button id="fullscreen-btn" title="全屏模式"><i class="fa fa-expand"></i></button>
+            <button id="view-toggle-btn" title="切换视图"><i class="fa fa-columns"></i> 视图</button>
+            <button id="theme-btn" title="切换主题"><i class="fa fa-moon"></i> 主题</button>
+        </div>
 
         <input type="file" id="file-input" accept=".md" style="display:none">
     </header>
@@ -308,12 +133,8 @@
         </div>
     </div>
 
-    <!-- 模块化脚本 -->
-    <script type="module" src="assets/scripts/app.js"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js').catch(console.error);
-      }
-    </script>
+    <!-- 主应用逻辑 -->
+    <script src="js/markdown-parser.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
