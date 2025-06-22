@@ -1,0 +1,400 @@
+/*
+ * 导航栏组件样式
+ * 包含导航菜单、下拉菜单、菜单项等样式
+ */
+
+/* ===== 导航栏容器 ===== */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--color-toolbar);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--color-toolbar-border);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    z-index: var(--z-sticky);
+    min-height: 64px;
+    transition: all var(--transition-normal);
+}
+
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(102, 126, 234, 0.05) 50%,
+        transparent 100%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    pointer-events: none;
+}
+
+.navbar:hover::before {
+    opacity: 1;
+}
+
+/* ===== 导航菜单容器 ===== */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+}
+
+/* ===== 导航项 ===== */
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* ===== 主导航按钮 ===== */
+.nav-button {
+    background: none;
+    border: none;
+    color: var(--color-fg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    min-width: 80px;
+    justify-content: center;
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left var(--transition-normal);
+}
+
+.nav-button:hover::before {
+    left: 100%;
+}
+
+.nav-button:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.nav-button:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-button i {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.nav-button:hover i {
+    opacity: 1;
+}
+
+/* ===== 箭头图标 ===== */
+.nav-arrow {
+    font-size: 0.75rem !important;
+    transition: transform var(--transition-fast);
+    margin-left: auto;
+}
+
+.nav-item:hover .nav-arrow {
+    transform: rotate(180deg);
+}
+
+/* ===== 下拉菜单容器 ===== */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: var(--color-toolbar);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--color-toolbar-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--transition-normal);
+    z-index: var(--z-dropdown);
+    padding: var(--spacing-sm) 0;
+    margin-top: var(--spacing-xs);
+}
+
+.nav-item:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0ms;
+}
+
+.dropdown-menu:hover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-item .dropdown-menu {
+    transition-delay: 300ms;
+}
+
+/* ===== 菜单项 ===== */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--color-fg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: var(--color-primary);
+    transition: width var(--transition-fast);
+    z-index: -1;
+}
+
+.menu-item:hover::before {
+    width: 100%;
+}
+
+.menu-item:hover {
+    color: white;
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateX(4px);
+}
+
+.menu-item i {
+    font-size: 1rem;
+    opacity: 0.8;
+    min-width: 16px;
+    text-align: center;
+}
+
+.menu-item:hover i {
+    opacity: 1;
+}
+
+/* ===== 快捷键显示 ===== */
+.shortcut {
+    margin-left: auto;
+    font-size: var(--text-xs);
+    opacity: 0.6;
+    font-weight: 400;
+    background: rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .shortcut {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item:hover .shortcut {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    opacity: 1;
+}
+
+/* ===== 菜单分隔线 ===== */
+.menu-separator {
+    height: 1px;
+    background: var(--color-toolbar-border);
+    margin: var(--spacing-sm) 0;
+    opacity: 0.5;
+}
+
+/* ===== 子菜单 ===== */
+.submenu {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    min-width: 120px;
+    background: var(--color-toolbar);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--color-toolbar-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all var(--transition-normal);
+    z-index: calc(var(--z-dropdown) + 1);
+    padding: var(--spacing-sm) 0;
+    margin-left: var(--spacing-xs);
+}
+
+.menu-item:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.submenu .menu-item {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--text-xs);
+    justify-content: center;
+    min-width: auto;
+}
+
+/* ===== 深色主题特殊样式 ===== */
+[data-theme="dark"] .navbar::before {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(129, 140, 248, 0.08) 50%,
+        transparent 100%);
+}
+
+[data-theme="dark"] .nav-button:hover {
+    background: var(--color-primary-solid);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+[data-theme="dark"] .menu-item:hover {
+    background: rgba(129, 140, 248, 0.15);
+}
+
+/* ===== 菜单动画效果 ===== */
+@keyframes menuSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes menuSlideRight {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.dropdown-menu {
+    animation: menuSlideDown 0.2s ease-out;
+}
+
+.submenu {
+    animation: menuSlideRight 0.2s ease-out;
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: var(--spacing-sm);
+        min-height: 56px;
+    }
+
+    .nav-menu {
+        gap: var(--spacing-xs);
+        flex-wrap: wrap;
+    }
+
+    .nav-button {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--text-xs);
+        min-width: 70px;
+    }
+
+    .dropdown-menu {
+        min-width: 200px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+    }
+
+    .nav-item:hover .dropdown-menu {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .menu-item {
+        padding: calc(var(--spacing-sm) + var(--spacing-xs)) var(--spacing-md);
+        font-size: var(--text-xs);
+    }
+
+    .shortcut {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: var(--spacing-sm);
+        min-height: 56px;
+    }
+    
+    .nav-menu {
+        gap: var(--spacing-xs);
+        flex-wrap: wrap;
+    }
+    
+    .nav-button {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--text-xs);
+        min-width: 70px;
+    }
+    
+    .dropdown-menu {
+        min-width: 200px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    
+    .nav-item:hover .dropdown-menu {
+        transform: translateX(-50%) translateY(0);
+    }
+    
+    .menu-item {
+        padding: calc(var(--spacing-sm) + var(--spacing-xs)) var(--spacing-md);
+        font-size: var(--text-xs);
+    }
+    
+    .shortcut {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+}

@@ -1,0 +1,324 @@
+/*
+ * 深色主题样式
+ * 定义深色主题的特定样式和覆盖
+ */
+
+/* ===== 深色主题基础样式 ===== */
+[data-theme="dark"] {
+    /* 深色主题配色方案 */
+    --color-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --color-bg-solid: #0f172a;
+    --color-fg: #f1f5f9;
+    --color-fg-secondary: #94a3b8;
+    --color-toolbar: rgba(15, 23, 42, 0.95);
+    --color-toolbar-border: rgba(71, 85, 105, 0.3);
+    --color-statusbar: rgba(15, 23, 42, 0.95);
+    
+    /* 深色主题色彩 */
+    --color-primary: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+    --color-primary-solid: #818cf8;
+    --color-secondary: linear-gradient(135deg, #f472b6 0%, #fb7185 100%);
+    --color-accent: linear-gradient(135deg, #06b6d4 0%, #67e8f9 100%);
+    --color-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    --color-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    
+    /* 深色主题阴影 */
+    --shadow-glow: 0 0 20px rgba(129, 140, 248, 0.4);
+}
+
+/* ===== 深色主题背景装饰 ===== */
+[data-theme="dark"] body::before {
+    background:
+        radial-gradient(circle at 20% 80%, rgba(129, 140, 248, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(244, 114, 182, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+}
+
+/* ===== 深色主题组件特定样式 ===== */
+
+/* 编辑器面板 */
+[data-theme="dark"] .editor-panel {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* 预览面板 */
+[data-theme="dark"] .preview-panel {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* 行号容器 */
+[data-theme="dark"] .line-numbers {
+    background: rgba(15, 23, 42, 0.9);
+    border-right-color: rgba(71, 85, 105, 0.4);
+}
+
+[data-theme="dark"] .line-numbers:hover {
+    background: rgba(15, 23, 42, 1);
+    border-right-color: rgba(129, 140, 248, 0.4);
+}
+
+[data-theme="dark"] .line-numbers::before {
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(129, 140, 248, 0.4) 50%,
+        transparent 100%);
+}
+
+/* 代码样式 */
+[data-theme="dark"] code {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] pre {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 引用块 */
+[data-theme="dark"] .markdown-body blockquote {
+    background: rgba(129, 140, 248, 0.1);
+}
+
+/* 表格样式 */
+[data-theme="dark"] .markdown-body table {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .markdown-body td {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .markdown-body tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* 快捷键显示 */
+[data-theme="dark"] .shortcut {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 状态栏项 */
+[data-theme="dark"] #status-cursor {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] #status-text,
+[data-theme="dark"] #status-words,
+[data-theme="dark"] #status-lines {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 上下文菜单项快捷键 */
+[data-theme="dark"] .context-menu-item .shortcut {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== 深色主题特殊效果 ===== */
+
+/* 导航栏装饰 */
+[data-theme="dark"] .navbar::before {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(129, 140, 248, 0.08) 50%,
+        transparent 100%);
+}
+
+/* 导航按钮悬停效果 */
+[data-theme="dark"] .nav-button:hover {
+    background: var(--color-primary-solid);
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+/* 菜单项悬停效果 */
+[data-theme="dark"] .menu-item:hover {
+    background: rgba(129, 140, 248, 0.15);
+}
+
+/* 状态栏项悬停效果 */
+[data-theme="dark"] .statusbar span:hover {
+    background: rgba(129, 140, 248, 0.1);
+}
+
+/* 上下文菜单悬停效果 */
+[data-theme="dark"] .context-menu-item:hover {
+    background: rgba(129, 140, 248, 0.15);
+}
+
+/* ===== 深色主题滚动条 ===== */
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] * {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* ===== 深色主题选择文本 ===== */
+[data-theme="dark"] ::selection {
+    background: var(--color-primary-solid);
+    color: white;
+}
+
+[data-theme="dark"] ::-moz-selection {
+    background: var(--color-primary-solid);
+    color: white;
+}
+
+/* ===== 深色主题焦点样式 ===== */
+[data-theme="dark"] :focus-visible {
+    outline: 2px solid var(--color-primary-solid);
+    outline-offset: 2px;
+}
+
+/* ===== 深色主题数学公式 ===== */
+[data-theme="dark"] .math-block {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(71, 85, 105, 0.3);
+}
+
+[data-theme="dark"] .math-block:hover {
+    background: rgba(15, 23, 42, 1);
+    border-color: rgba(129, 140, 248, 0.4);
+}
+
+/* ===== 深色主题通知 ===== */
+[data-theme="dark"] .notification {
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+[data-theme="dark"] .notification.success {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+}
+
+[data-theme="dark"] .notification.error {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+}
+
+[data-theme="dark"] .notification.warning {
+    background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+}
+
+[data-theme="dark"] .notification.info {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+}
+
+/* ===== 深色主题标记文本 ===== */
+[data-theme="dark"] mark {
+    background: rgba(255, 235, 59, 0.2);
+}
+
+/* ===== 深色主题键盘按键 ===== */
+[data-theme="dark"] kbd {
+    background: var(--color-fg-secondary);
+    color: var(--color-bg-solid);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== 深色主题链接悬停 ===== */
+[data-theme="dark"] .markdown-body a:hover {
+    background: rgba(129, 140, 248, 0.1);
+}
+
+/* ===== 深色主题表格悬停 ===== */
+[data-theme="dark"] .markdown-body tbody tr:hover {
+    background: rgba(129, 140, 248, 0.1);
+}
+
+/* ===== 深色主题状态指示器 ===== */
+[data-theme="dark"] .status-indicator.success {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .status-indicator.warning {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .status-indicator.error {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .status-indicator.info {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* ===== 深色主题数学对话框 ===== */
+[data-theme="dark"] .math-type-selector {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(71, 85, 105, 0.3);
+}
+
+/* ===== 深色主题文件名状态项 ===== */
+[data-theme="dark"] #status-filename {
+    background: linear-gradient(135deg, rgba(129, 140, 248, 0.15), rgba(244, 114, 182, 0.15));
+    border-color: rgba(129, 140, 248, 0.3);
+}
+
+/* ===== 深色主题工具栏组 ===== */
+[data-theme="dark"] .toolbar-group {
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+[data-theme="dark"] .toolbar-group:hover {
+    background: rgba(15, 23, 42, 0.5);
+    border-color: rgba(129, 140, 248, 0.4);
+}
+
+/* ===== 深色主题高对比度模式 ===== */
+@media (prefers-contrast: high) {
+    [data-theme="dark"] {
+        --color-fg: #ffffff;
+        --color-fg-secondary: #e2e8f0;
+        --color-toolbar-border: rgba(255, 255, 255, 0.3);
+    }
+    
+    [data-theme="dark"] .editor-panel,
+    [data-theme="dark"] .preview-panel {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    [data-theme="dark"] code,
+    [data-theme="dark"] pre {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* ===== 深色主题打印样式 ===== */
+@media print {
+    [data-theme="dark"] body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    [data-theme="dark"] .editor-panel,
+    [data-theme="dark"] .preview-panel {
+        background: white !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    [data-theme="dark"] .navbar,
+    [data-theme="dark"] .statusbar {
+        display: none !important;
+    }
+    
+    [data-theme="dark"] .markdown-body {
+        color: black !important;
+    }
+}

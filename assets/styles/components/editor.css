@@ -1,0 +1,279 @@
+/*
+ * 编辑器组件样式
+ * 包含编辑器容器、文本区域、行号等样式
+ */
+
+/* ===== 编辑器容器 ===== */
+.editor-container {
+    flex: 1 1 auto;
+    display: flex;
+    min-height: 0;
+    transition: all var(--transition-normal);
+    gap: 1px;
+    padding: var(--spacing-lg);
+    background: var(--color-bg-solid);
+}
+
+/* ===== 编辑器面板 ===== */
+.editor-panel {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition-normal);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-right: var(--spacing-sm);
+    animation: slideInRight 0.8s var(--ease-in-out);
+}
+
+[data-theme="dark"] .editor-panel {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* ===== 编辑器包装容器 ===== */
+.editor-wrapper {
+    display: flex;
+    height: 100%;
+    position: relative;
+}
+
+/* ===== 行号容器 ===== */
+.line-numbers {
+    background: rgba(248, 250, 252, 0.9);
+    border-right: 1px solid rgba(148, 163, 184, 0.3);
+    color: var(--color-fg-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.8;
+    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-xl) var(--spacing-lg);
+    text-align: right;
+    user-select: none;
+    white-space: pre;
+    min-width: 3rem;
+    max-width: 4rem;
+    overflow: hidden;
+    position: relative;
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .line-numbers {
+    background: rgba(15, 23, 42, 0.9);
+    border-right-color: rgba(71, 85, 105, 0.4);
+    color: var(--color-fg-secondary);
+}
+
+/* ===== 行号悬停效果 ===== */
+.line-numbers:hover {
+    background: rgba(248, 250, 252, 1);
+    border-right-color: rgba(102, 126, 234, 0.3);
+}
+
+[data-theme="dark"] .line-numbers:hover {
+    background: rgba(15, 23, 42, 1);
+    border-right-color: rgba(129, 140, 248, 0.4);
+}
+
+/* ===== 行号滚动条隐藏 ===== */
+.line-numbers::-webkit-scrollbar {
+    display: none;
+}
+
+.line-numbers {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ===== 行号装饰效果 ===== */
+.line-numbers::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(102, 126, 234, 0.3) 50%,
+        transparent 100%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.line-numbers:hover::before {
+    opacity: 1;
+}
+
+[data-theme="dark"] .line-numbers::before {
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(129, 140, 248, 0.4) 50%,
+        transparent 100%);
+}
+
+/* ===== 编辑器文本区域 ===== */
+#editor {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    border: none;
+    resize: none;
+    padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-xl) var(--spacing-lg);
+    font-size: var(--text-base);
+    line-height: 1.8;
+    background: transparent;
+    color: var(--color-fg);
+    outline: none;
+    font-family: var(--font-mono);
+    transition: all var(--transition-normal);
+    font-feature-settings: 'liga' 1, 'calt' 1;
+    letter-spacing: 0.025em;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#editor:focus {
+    box-shadow: inset 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+#editor::placeholder {
+    color: var(--color-fg-secondary);
+    opacity: 0.6;
+}
+
+/* ===== 编辑器滚动条样式 ===== */
+#editor::-webkit-scrollbar {
+    width: 6px;
+}
+
+#editor::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#editor::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+}
+
+#editor::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
+/* ===== 视图状态样式 ===== */
+
+/* 仅编辑器视图 */
+.view-editor .editor-panel {
+    margin-right: 0;
+}
+
+.view-editor .preview-panel {
+    display: none;
+}
+
+/* 仅预览视图 */
+.view-preview .editor-panel {
+    display: none;
+}
+
+.view-preview .preview-panel {
+    margin-left: 0;
+}
+
+/* 分栏视图（默认） */
+.view-split .editor-panel {
+    margin-right: var(--spacing-sm);
+}
+
+.view-split .preview-panel {
+    margin-left: var(--spacing-sm);
+}
+
+/* ===== 全屏模式样式 ===== */
+.fullscreen .editor-container {
+    height: calc(100vh - 64px - 48px);
+    padding: var(--spacing-lg);
+}
+
+.fullscreen .editor-panel {
+    border-radius: var(--radius-lg);
+}
+
+/* ===== 响应式布局 ===== */
+@media (max-width: 1024px) {
+    .editor-container {
+        flex-direction: column;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+
+    .editor-panel {
+        margin-right: 0;
+        margin-bottom: var(--spacing-sm);
+        border-radius: var(--radius-lg);
+    }
+
+    #editor {
+        padding: var(--spacing-lg);
+    }
+
+    /* 移动端行号优化 */
+    .line-numbers {
+        min-width: 2.5rem;
+        max-width: 3rem;
+        padding: var(--spacing-lg) var(--spacing-sm) var(--spacing-lg) var(--spacing-md);
+        font-size: var(--text-xs);
+    }
+
+    #editor {
+        padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
+    }
+}
+
+@media (max-width: 768px) {
+    #editor {
+        padding: var(--spacing-lg);
+        font-size: var(--text-sm);
+    }
+
+    /* 小屏幕行号进一步优化 */
+    .line-numbers {
+        min-width: 2rem;
+        max-width: 2.5rem;
+        padding: var(--spacing-lg) var(--spacing-xs) var(--spacing-lg) var(--spacing-sm);
+        font-size: 0.75rem;
+    }
+
+    #editor {
+        padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+        font-size: var(--text-sm);
+    }
+}
+
+/* ===== 编辑器动画效果 ===== */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* ===== 性能优化 ===== */
+.editor-panel {
+    will-change: transform, opacity;
+}
+
+#editor {
+    will-change: scroll-position;
+}
